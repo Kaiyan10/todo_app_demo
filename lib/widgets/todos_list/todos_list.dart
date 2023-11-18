@@ -15,7 +15,7 @@ class TodosList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ReorderableListView.builder(
       itemCount: todos.length,
       itemBuilder: (ctx, index) => Dismissible(
         key: ValueKey(todos[index]),
@@ -32,6 +32,13 @@ class TodosList extends StatelessWidget {
           todos[index],
         ),
       ),
+      onReorder: (oldIndex, newIndex) {
+        if (oldIndex < newIndex) {
+          newIndex -= 1;
+        }
+        final Todo item = todos.removeAt(oldIndex);
+        todos.insert(newIndex, item);
+      },
     );
   }
 }

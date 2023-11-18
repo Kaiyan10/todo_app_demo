@@ -18,12 +18,12 @@ class _TodosState extends State<Todos> {
     Todo(
       action: '資料を作成する',
       date: DateTime.now(),
-      category: Category.work,
+      priority: Priority.high,
     ),
     Todo(
       action: 'メールを送信する',
       date: DateTime.now(),
-      category: Category.leisure,
+      priority: Priority.low,
     ),
   ];
 
@@ -91,17 +91,17 @@ class _TodosState extends State<Todos> {
       ),
       body: width < 600
           ? Column(
-        children: [
-          Expanded(
-            child: mainContent,
-          ),
-        ],
-      )
+              children: [
+                Expanded(
+                  child: mainContent,
+                ),
+              ],
+            )
           : Row(children: [
-        Expanded(
-          child: mainContent,
-        ),
-      ]),
+              Expanded(
+                child: mainContent,
+              ),
+            ]),
     );
   }
 }

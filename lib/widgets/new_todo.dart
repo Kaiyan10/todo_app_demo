@@ -19,7 +19,7 @@ class NewExpense extends StatefulWidget {
 class _NewExpenseState extends State<NewExpense> {
   final _titleController = TextEditingController();
   DateTime? _selectedDate;
-  Category _selectedCategory = Category.leisure;
+  Priority _selectedPriority = Priority.middle;
 
   void _presentDatePicker() async {
     final now = DateTime.now();
@@ -40,18 +40,18 @@ class _NewExpenseState extends State<NewExpense> {
       showCupertinoDialog(
           context: context,
           builder: (ctx) => CupertinoAlertDialog(
-            title: const Text('Invalid input'),
-            content: const Text(
-                'Please make sure a valid title, amount, date and category was entered.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(ctx);
-                },
-                child: const Text('Okay'),
-              ),
-            ],
-          ));
+                title: const Text('Invalid input'),
+                content: const Text(
+                    'Please make sure a valid title, amount, date and category was entered.'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(ctx);
+                    },
+                    child: const Text('Okay'),
+                  ),
+                ],
+              ));
     } else {
       showDialog(
         context: context,
@@ -73,8 +73,7 @@ class _NewExpenseState extends State<NewExpense> {
   }
 
   void _submitExpenseData() {
-    if (_titleController.text.trim().isEmpty ||
-        _selectedDate == null) {
+    if (_titleController.text.trim().isEmpty || _selectedDate == null) {
       _showDialog();
       return;
     }
@@ -83,7 +82,7 @@ class _NewExpenseState extends State<NewExpense> {
       Todo(
         action: _titleController.text,
         date: _selectedDate!,
-        category: _selectedCategory,
+        priority: _selectedPriority,
       ),
     );
     Navigator.pop(context);
@@ -111,6 +110,7 @@ class _NewExpenseState extends State<NewExpense> {
                 if (width >= 600)
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Expanded(
                         child: TextField(
@@ -121,7 +121,6 @@ class _NewExpenseState extends State<NewExpense> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 24),
                     ],
                   )
                 else
@@ -132,35 +131,46 @@ class _NewExpenseState extends State<NewExpense> {
                       label: Text('タスク名'),
                     ),
                   ),
-                if (width >= 600)
-                  Row(children: [
+                Row(
+                  children: [
+                    const Text("優先度"),
+                    const SizedBox(
+                      width: 20,
+                    ),
                     DropdownButton(
-                      value: _selectedCategory,
-                      items: Category.values
+                      value: _selectedPriority,
+                      items: Priority.values
                           .map(
-                            (category) => DropdownMenuItem(
-                          value: category,
-                          child: Text(
-                            category.name.toUpperCase(),
-                          ),
-                        ),
-                      )
+                            (priority) => DropdownMenuItem(
+                              value: priority,
+                              child: Text(
+                                priority.displayName,
+                              ),
+                            ),
+                          )
                           .toList(),
                       onChanged: (value) {
                         if (value == null) {
                           return;
                         }
                         setState(() {
-                          _selectedCategory = value;
+                          _selectedPriority = value;
                         });
                       },
                     ),
-                    const SizedBox(width: 24),
+                  ],
+                ),
+                if (width >= 600)
+                  Row(children: [
                     Expanded(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          const Text("期限"),
+                          const SizedBox(
+                            width: 20,
+                          ),
                           Text(
                             _selectedDate == null
                                 ? 'No date selected'
@@ -179,13 +189,16 @@ class _NewExpenseState extends State<NewExpense> {
                 else
                   Row(
                     children: [
-
                       const SizedBox(width: 16),
                       Expanded(
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
+                            const Text("期限"),
+                            const SizedBox(
+                              width: 20,
+                            ),
                             Text(
                               _selectedDate == null
                                   ? 'No date selected'
@@ -219,29 +232,8 @@ class _NewExpenseState extends State<NewExpense> {
                   ])
                 else
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      DropdownButton(
-                        value: _selectedCategory,
-                        items: Category.values
-                            .map(
-                              (category) => DropdownMenuItem(
-                            value: category,
-                            child: Text(
-                              category.name.toUpperCase(),
-                            ),
-                          ),
-                        )
-                            .toList(),
-                        onChanged: (value) {
-                          if (value == null) {
-                            return;
-                          }
-                          setState(() {
-                            _selectedCategory = value;
-                          });
-                        },
-                      ),
-                      const Spacer(),
                       TextButton(
                         onPressed: () {
                           Navigator.pop(context);

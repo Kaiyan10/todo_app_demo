@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
 
@@ -6,26 +7,25 @@ final formatter = DateFormat.yMd();
 
 const uuid = Uuid();
 
-enum Category { food, travel, leisure, work }
+enum Priority {
+  high("高"),
+  middle("中"),
+  low('低'),
+  ;
 
-const categoryIcons = {
-  Category.food: Icons.lunch_dining,
-  Category.travel: Icons.flight_takeoff,
-  Category.leisure: Icons.movie,
-  Category.work: Icons.work,
-};
+  const Priority(this.displayName);
+
+  final String displayName;
+}
 
 class Todo {
-  Todo({
-    required this.action,
-    required this.date,
-    required this.category,
-  }) : id = uuid.v4();
+  Todo({required this.action, required this.date, required this.priority})
+      : id = uuid.v4();
 
   final String id;
   final String action;
   final DateTime date;
-  final Category category;
+  final Priority priority;
 
   String get formattedDate {
     return formatter.format(date);
@@ -34,16 +34,11 @@ class Todo {
 
 class ExpenseBucket {
   const ExpenseBucket({
-    required this.category,
     required this.expenses,
   });
 
-  ExpenseBucket.forCategory(List<Todo> allExpenses, this.category)
-      : expenses = allExpenses
-      .where((expense) => expense.category == category)
-      .toList();
+  ExpenseBucket.forCategory(List<Todo> allExpenses)
+      : expenses = allExpenses.toList();
 
-  final Category category;
   final List<Todo> expenses;
-
 }

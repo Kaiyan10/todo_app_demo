@@ -27,11 +27,25 @@ class TodoItem extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(categoryIcons[todo.category]),
-                    const SizedBox(width: 8),
                     Text(todo.formattedDate),
                   ],
                 ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Container(
+                  width: 30,
+                  height: 20,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(todo.priority.displayName,
+                      style: TextStyle(
+                        fontSize: 10,
+                      )),
+                )
               ],
             ),
           ],
