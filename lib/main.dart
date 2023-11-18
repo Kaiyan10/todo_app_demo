@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:todo_app/widgets/todos.dart';
 
 var kColorScheme = ColorScheme.fromSeed(
-  seedColor: const Color.fromARGB(255, 96, 59, 181),
+  seedColor: Color.fromARGB(255, 12, 43, 180),
 );
 
 var kDarkColorScheme = ColorScheme.fromSeed(
@@ -56,12 +56,12 @@ void main() {
           ),
         ),
         textTheme: ThemeData().textTheme.copyWith(
-          titleLarge: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: kColorScheme.onSecondaryContainer,
-            fontSize: 16,
-          ),
-        ),
+              titleLarge: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: kColorScheme.onSecondaryContainer,
+                fontSize: 16,
+              ),
+            ),
       ),
       // themeMode: ThemeMode.system, // default
       home: const Todos(),
